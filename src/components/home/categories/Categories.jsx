@@ -11,11 +11,7 @@ const Categories = ({ categories }) => {
 
       <div className=" flex flex-wrap lg:justify-start justify-center lg:gap-10 gap-2 mt-2 lg:mt-5">
         {categories.map((category) => (
-          <div
-            key={category._id}
-            className=" hover:cursor-pointer"
-            onClick={""}
-          >
+          <div key={category._id} className=" hover:cursor-pointer">
             <CategoryCard {...category} />
           </div>
         ))}

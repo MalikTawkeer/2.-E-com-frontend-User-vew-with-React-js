@@ -23,7 +23,6 @@ const Card = ({
         />
         {discount && (
           <div className="absolute left-3 top-0 bottom-0">
-            {" "}
             {/* Position discount icon on top left */}
             <DiscountIcon /> {/* Icon */}
             <div className="absolute top-8 left-0 w-full h-full flex justify-center items-start">

@@ -16,11 +16,11 @@ const HomePage = () => {
 
   return (
     <Layout>
-      {data && <Banner banners={data.banners} />}
-      {data && <Categories categories={data.categories} />}
-      {data && <Discounts discounts={data.discounts} />}
-      {data && <TopSellers bestSellers={data.bestSellers} />}
-      {data && <Featured featuredProducts={data.featured} />}
+      {data.banners && <Banner banners={data.banners} />}
+      {data.categories && <Categories categories={data.categories} />}
+      {data.discounts && <Discounts discounts={data.discounts} />}
+      {data.bestSellers && <TopSellers bestSellers={data.bestSellers} />}
+      {data.featured && <Featured featuredProducts={data.featured} />}
     </Layout>
   );
 };

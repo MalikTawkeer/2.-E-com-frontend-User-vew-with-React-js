@@ -13,10 +13,8 @@ import "./styles.css";
 import { Pagination, Autoplay, Navigation } from "swiper/modules";
 
 const Banner = ({ banners }) => {
-  console.log(banners);
-
   return (
-    <>
+    <div className=" mt-5">
       <Swiper
         slidesPerView={1}
         spaceBetween={30}
@@ -39,7 +37,7 @@ const Banner = ({ banners }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </>
+    </div>
   );
 };
 
