@@ -7,6 +7,7 @@ const Card = ({ name, description, category_icon }) => {
         <img
           src={category_icon}
           alt={name}
+          loading="lazy"
           className=" rounded-xl overflow-clip w-42 h-40 "
         />
       </div>

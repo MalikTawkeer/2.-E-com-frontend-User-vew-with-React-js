@@ -19,6 +19,7 @@ const Card = ({
         <img
           src={product_images[0]?.url}
           className="w-44 h-44 rounded-md hover:scale-105 duration-500"
+          loading="lazy"
           alt={name}
         />
         {discount && (
