@@ -1,4 +1,4 @@
-export const apiBaseUrl = "https://e-com-backend-z1mf.onrender.com/";
+export const apiBaseUrl = import.meta.env.VITE_API_URL;
 
 // Customer endpoints
 export const login = "api/v1/user/login";
