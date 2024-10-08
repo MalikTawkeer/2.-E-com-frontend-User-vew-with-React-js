@@ -14,7 +14,6 @@ const Discounts = ({ discounts }) => {
           <div
             key={discount._id}
             className="relative inline-block hover:cursor-pointer bg-yellow-400 py-2 px-1 rounded-lg h-42 hover:shadow-lg hover:scale-105 duration-300 "
-            onClick={""}
           >
             <DiscountIcon /> {/* This will be your icon */}
             {/* Discount value over the icon */}

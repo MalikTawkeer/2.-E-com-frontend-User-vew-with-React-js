@@ -12,7 +12,7 @@ import { homeFeed } from "../constants/ApiConstants.js";
 import Featured from "../components/home/FeaturedProducts.jsx";
 
 const HomePage = () => {
-  const { data, error, loading } = useFetch(homeFeed, "GET");
+  const { data = {}, error, loading } = useFetch(homeFeed, "GET");
 
   return (
     <Layout>
