@@ -2,6 +2,7 @@ import React from "react";
 
 import useFetch from "../hooks/UseFetch.jsx";
 import Layout from "../components/Layout.jsx";
+import Spinner from "../components/Spinner.jsx";
 
 import Banner from "../components/home/banner/Banner.jsx";
 import Categories from "../components/home/categories/Categories.jsx";
@@ -16,6 +17,7 @@ const HomePage = () => {
 
   return (
     <Layout>
+      {loading && <Spinner />}
       {data && <Banner banners={data.banners} />}
       {data && <Categories categories={data.categories} />}
       {data && <Discounts discounts={data.discounts} />}

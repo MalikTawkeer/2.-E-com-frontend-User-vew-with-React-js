@@ -8,7 +8,7 @@ const Card = ({
   price,
   discount,
   description,
-  product_images,
+  product_images = [{}],
   stock,
 }) => {
   return (
@@ -30,8 +30,8 @@ const Card = ({
               {" "}
               {/* Align discount value properly */}
               <span className="bg-red-500 text-white text-sm font-bold px-2 rounded-full">
-                {discount.value}
-                {discount.discount_type === "percentage" ? "%" : "₹"} OFF
+                {discount?.value}
+                {discount?.discount_type === "percentage" ? "%" : "₹"} OFF
               </span>
             </div>
           </div>
@@ -39,11 +39,11 @@ const Card = ({
       </div>
 
       <p className=" font-sans font-semibold text-lg lg:text-xl px-2 mt-2">
-        {name.slice(0, 1).toUpperCase() + name.slice(1, name.length)}
+        {name?.slice(0, 1).toUpperCase() + name?.slice(1, name?.length)}
       </p>
       <p className=" text-sm px-2 mt-1">
-        {description.length > 30
-          ? description.substring(1, 30) + "..."
+        {description?.length > 30
+          ? description?.substring(1, 30) + "..."
           : description}
       </p>
 

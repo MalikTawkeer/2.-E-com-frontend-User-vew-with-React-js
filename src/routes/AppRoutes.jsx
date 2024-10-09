@@ -10,6 +10,8 @@ const Cart = React.lazy(() => import("../pages/CartPage.jsx"));
 const ProductsPage = React.lazy(() => import("../pages/ProductsPage.jsx"));
 const CategoriesPage = React.lazy(() => import("../pages/CategoriesPage.jsx"));
 
+import CategoryItemListingPage from "../pages/CategoryItemsListingPage.jsx";
+
 const PageNotFound = React.lazy(() => import("../pages/PageNotFound.jsx"));
 
 const router = createBrowserRouter([
@@ -50,6 +52,15 @@ const router = createBrowserRouter([
           <Suspense fallback={<Spinner />}>
             <ProductsPage />
           </Suspense>
+        ),
+      },
+
+      {
+        path: "/category-item-listing/:category_id",
+        element: (
+          // <Suspense fallback={<Spinner />}>
+          <CategoryItemListingPage />
+          // </Suspense>
         ),
       },
 
