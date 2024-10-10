@@ -7,3 +7,4 @@ export const homeFeed = "api/v1/user/homefeed";
 
 // Product endpoints
 export const getProductsByCategoryId = "api/v1/products/category/";
+export const getProductsByDiscountId = "api/v1/products/discount/";
