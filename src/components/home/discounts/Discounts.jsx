@@ -1,8 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import DiscountIcon from "../../../assets/DiscountIcon.jsx";
 
 const Discounts = ({ discounts }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (discount_id, valid_until) => {
+    navigate(
+      `/discounted-products-listing/${discount_id}/${encodeURIComponent(
+        valid_until
+      )}`
+    );
+  };
+
   return (
     <div className="mt-10 lg:mt-20">
       <h1 className=" text-left font-bold lg:text-4xl ml-1 text-gray-800">
@@ -14,6 +25,7 @@ const Discounts = ({ discounts }) => {
           <div
             key={discount._id}
             className="relative inline-block hover:cursor-pointer bg-yellow-400 py-2 px-1 rounded-lg h-42 hover:shadow-lg hover:scale-105 duration-300 "
+            onClick={() => handleClick(discount._id, discount.valid_until)}
           >
             <DiscountIcon /> {/* This will be your icon */}
             {/* Discount value over the icon */}

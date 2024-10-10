@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import Layout from "../components/Layout.jsx";
 
-import CateItemListing from "../components/category item listing/CategoryItemListing";
+import CateItemListing from "../components/category item listing/CategoryItemListing.jsx";
 
 const Listing = () => {
   const { category_id } = useParams();

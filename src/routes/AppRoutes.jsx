@@ -10,7 +10,8 @@ const Cart = React.lazy(() => import("../pages/CartPage.jsx"));
 const ProductsPage = React.lazy(() => import("../pages/ProductsPage.jsx"));
 const CategoriesPage = React.lazy(() => import("../pages/CategoriesPage.jsx"));
 
-import CategoryItemListingPage from "../pages/CategoryItemsListingPage.jsx";
+import CategoryProductsListingPage from "../pages/CategoryProductsListingPage.jsx";
+import DiscountedProductsListingPage from "../pages/DiscountedProductsPage.jsx";
 
 const PageNotFound = React.lazy(() => import("../pages/PageNotFound.jsx"));
 
@@ -59,7 +60,16 @@ const router = createBrowserRouter([
         path: "/category-item-listing/:category_id",
         element: (
           // <Suspense fallback={<Spinner />}>
-          <CategoryItemListingPage />
+          <CategoryProductsListingPage />
+          // </Suspense>
+        ),
+      },
+
+      {
+        path: "/discounted-products-listing/:discount_id/:valid_until",
+        element: (
+          // <Suspense fallback={<Spinner />}>
+          <DiscountedProductsListingPage />
           // </Suspense>
         ),
       },
