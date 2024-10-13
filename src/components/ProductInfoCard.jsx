@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import DiscountIcon from "../assets/DiscountIcon.jsx";
 
@@ -11,8 +12,17 @@ const Card = ({
   product_images = [{}],
   stock,
 }) => {
+  const navigate = useNavigate();
+
+  const handleClick = (product_id) => {
+    navigate(`/product-details/${product_id}`);
+  };
+
   return (
-    <div className=" flex flex-col items-center bg-gray-50 py-2 rounded-lg h-[250px] hover:shadow-lg duration-500 cursor-pointer">
+    <div
+      onClick={() => handleClick(_id)}
+      className=" flex flex-col items-center bg-gray-50 py-2 rounded-lg h-[250px] hover:shadow-lg duration-500 cursor-pointer"
+    >
       <div className="relative">
         {" "}
         {/* Ensure the parent div has 'relative' for absolute positioning inside */}
