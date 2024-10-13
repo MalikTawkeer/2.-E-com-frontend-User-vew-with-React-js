@@ -8,6 +8,9 @@ import Spinner from "../components/Spinner.jsx";
 const Home = React.lazy(() => import("../pages/HomePage.jsx"));
 const Cart = React.lazy(() => import("../pages/CartPage.jsx"));
 const ProductsPage = React.lazy(() => import("../pages/ProductsPage.jsx"));
+const ProductsDetailsPage = React.lazy(() =>
+  import("../pages/ProductDetailsPage.jsx")
+);
 const CategoriesPage = React.lazy(() => import("../pages/CategoriesPage.jsx"));
 
 import CategoryProductsListingPage from "../pages/CategoryProductsListingPage.jsx";
@@ -52,6 +55,15 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Spinner />}>
             <ProductsPage />
+          </Suspense>
+        ),
+      },
+
+      {
+        path: "/product-details/:product_id",
+        element: (
+          <Suspense fallback={<Spinner />}>
+            <ProductsDetailsPage />
           </Suspense>
         ),
       },
