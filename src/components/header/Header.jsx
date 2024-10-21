@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import useAuthStore from "../../store/authStore";
+
+import Dropdown from "./Dropdown";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const token = useAuthStore((state) => state.token);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -32,18 +36,24 @@ const Header = () => {
           </Link>
 
           <div className="flex items-center lg:order-2">
-            <Link
-              to="/login"
-              className="text-gray-800 bg-green-300 font-bold dark:text-white hover:bg-green-200 focus:ring-4 focus:ring-gray-300 rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
-            >
-              Log in
-            </Link>
-            <Link
-              to="/signin"
-              className="text-gray-800 bg-primary-400 font-bold hover:bg-blue-200 focus:ring-4 focus:ring-primary-300 rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-            >
-              Sign up
-            </Link>
+            {token && <Dropdown />}
+
+            {!token && (
+              <Link
+                to="/login"
+                className="text-gray-800 bg-green-300 font-bold dark:text-white hover:bg-green-200 focus:ring-4 focus:ring-gray-300 rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
+              >
+                Log in
+              </Link>
+            )}
+            {!token && (
+              <Link
+                to="/signup"
+                className="text-gray-800 bg-primary-400 font-bold hover:bg-blue-200 focus:ring-4 focus:ring-primary-300 rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+              >
+                Sign up
+              </Link>
+            )}
 
             {/* MENU ICON */}
             <button
@@ -88,17 +98,19 @@ const Header = () => {
             id="mobile-menu-2"
           >
             <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0 bg-gray-200 lg:bg-white z-50">
-              {navItems.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    to={item.path}
-                    className="block py-2 pr-4 pl-3 text-gray-800 rounded  lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white"
-                    aria-current="page"
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
+              {navItems
+                .filter((item) => item.name !== "Orders" || token) // Hide "Orders" if token is null
+                .map((item) => (
+                  <li key={item.name}>
+                    <Link
+                      to={item.path}
+                      className="block py-2 pr-4 pl-3 text-gray-800 rounded lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white"
+                      aria-current="page"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
