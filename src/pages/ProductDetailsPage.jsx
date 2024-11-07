@@ -3,45 +3,37 @@ import { useParams } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+import calculateDiscountedPrice from "../utils/calculate.discounted.price.js";
 import useFetch from "../hooks/UseFetch.jsx";
 import { getProductDetailsByProdId } from "../constants/ApiConstants";
 
 import Layout from "../components/Layout.jsx";
 import ImageSwipper from "../components/product details/ImageSwipper.jsx";
-import AddToCartButton from "../components/AddToCartButton.jsx";
+import useCartStore from "../store/cartStore.js";
+import useAuthStore from "../store/authStore.js";
+import Spinner from "../components/Spinner.jsx";
 
 const Details = () => {
-  const [isExtended, setIsExtended] = useState(false);
   const { product_id } = useParams();
+
+  const [isExtended, setIsExtended] = useState(false);
+  const [deviceType, setDeviceType] = useState(""); // Calculte device viewports
 
   const { data, error, loading } = useFetch(
     `${getProductDetailsByProdId}${product_id}`
   );
 
-  const toggleDescription = () => {
-    setIsExtended(!isExtended);
-  };
-
-  const calculateDiscountedPrice = (orginalPrice, discount = {}) => {
-    let newPrice = "";
-
-    // Handle units case
-    if (discount?.discount_type === "units") {
-      newPrice = orginalPrice - discount?.value;
-
-      return newPrice;
-    }
-
-    // Handle percentage case
-    if (discount?.discount_type === "percentage") {
-      newPrice = orginalPrice - (orginalPrice * discount?.value) / 100;
-
-      return newPrice;
-    }
-  };
-
-  // Calculte device viewports
-  const [deviceType, setDeviceType] = useState("");
+  // Store funcs and states
+  const token = useAuthStore((state) => state.token);
+  const cartItems = useCartStore((state) => state.cartItems);
+  const isLoading = useCartStore((state) => state.loading);
+  const isError = useCartStore((state) => state.error);
+  const getCartItems = useCartStore((state) => state.getCartItems);
+  const removeItemFromCart = useCartStore((state) => state.removeItemFromCart);
+  const addItemToCart = useCartStore((state) => state.addItemToCart);
+  const updateCartItemQuantity = useCartStore(
+    (state) => state.updateCartItemQuantity
+  );
 
   useEffect(() => {
     const checkDevice = () => {
@@ -54,6 +46,7 @@ const Details = () => {
 
     // Check on mount
     checkDevice();
+    getCartItems();
 
     // Add event listener to check on window resize
     window.addEventListener("resize", checkDevice);
@@ -61,6 +54,87 @@ const Details = () => {
     // Cleanup the event listener on unmount
     return () => window.removeEventListener("resize", checkDevice);
   }, []);
+
+  // Check item alredy exists into a cart
+  const [alredyExists, setExists] = useState(
+    cartItems?.some((item) =>
+      token
+        ? item?.product_id?._id === product_id
+        : item?.product_id === product_id
+    )
+  );
+
+  const [cartId, setCartId] = useState(null);
+
+  // Check item is in cart or not
+  useEffect(() => {
+    let existingItem = [];
+
+    if (token)
+      existingItem = cartItems?.find(
+        (item) => item?.product_id?._id === product_id
+      );
+
+    if (!token)
+      existingItem = cartItems?.find((item) => item?.product_id === product_id);
+
+    if (existingItem)
+      setCartId(token ? existingItem?._id : existingItem?.product_id);
+  }, []);
+
+  const toggleDescription = () => {
+    setIsExtended(!isExtended);
+  };
+
+  // Handle add to cart
+  const handleAddToCartClick = async (e) => {
+    // Prevent the click from propagating to the parent div
+    e.stopPropagation();
+
+    // Calculate discounted price
+
+    const res = await addItemToCart({
+      product_id: data?.productInfo?._id,
+      quantity: 1,
+      price: data?.productInfo?.discount
+        ? calculateDiscountedPrice(
+            data?.productInfo?.price,
+            data?.productInfo?.discount
+          )
+        : data?.productInfo?.price,
+      name: data?.productInfo?.name,
+      product_images: data?.productInfo?.product_images,
+      description: data?.productInfo?.description,
+    });
+    if (res === "added locally") {
+      getCartItems();
+      setExists(true);
+      return;
+    }
+
+    alert(res?.data?.message);
+    setExists(true);
+    getCartItems();
+  };
+
+  // Remove item from cart
+  const handleRemoveItemFromCart = async (e) => {
+    // Prevent the click from propagating to the parent div
+    e.stopPropagation();
+
+    const res = await removeItemFromCart(token ? cartId : product_id);
+
+    if (res === true) {
+      setExists(false);
+      alert("Item removed from cart");
+      return;
+    }
+
+    getCartItems();
+
+    alert(res?.data?.message);
+    if (res?.data?.message === "Item removed successfully!") setExists(false);
+  };
 
   return (
     <Layout>
@@ -161,7 +235,24 @@ const Details = () => {
                 )}
               </div>
 
-              <AddToCartButton />
+              <button
+                onClick={
+                  alredyExists ? handleRemoveItemFromCart : handleAddToCartClick
+                }
+                className={` ${
+                  !alredyExists
+                    ? "bg-[#2497f2] hover:bg-[#227ec9]"
+                    : " bg-red-500 hover:bg-red-400"
+                }  text-white font-bold shadow-lg text-sm rounded-lg px-3  duration-300 py-2`}
+              >
+                {isLoading ? (
+                  <Spinner color="white" />
+                ) : alredyExists ? (
+                  "Remove from cart"
+                ) : (
+                  "Add to cart"
+                )}
+              </button>
             </div>
 
             {/* DESCRIPTION */}

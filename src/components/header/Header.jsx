@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import useAuthStore from "../../store/authStore";
 
 import Dropdown from "./Dropdown";
+import CartIcon from "../cart/CartIcon";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,6 +37,10 @@ const Header = () => {
           </Link>
 
           <div className="flex items-center lg:order-2">
+            <div className=" mr-4">
+              <CartIcon />
+            </div>
+
             {token && <Dropdown />}
 
             {!token && (
