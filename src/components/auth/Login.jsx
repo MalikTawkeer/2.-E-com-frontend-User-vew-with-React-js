@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import Input from "../Input";
 import useAuthStore from "../../store/authStore.js";
 
+import Spinner from "../Spinner.jsx";
+
 function Login() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
@@ -22,7 +24,8 @@ function Login() {
     const l = await login(data.email, data.password);
     setLoading(false);
 
-    if (token) navigate("/");
+    navigate("/")
+    // if (token) navigate("/");
   };
 
   useEffect(() => {
@@ -90,9 +93,9 @@ function Login() {
 
               <button
                 type="submit"
-                className="w-fit bg-blue-400 py-1 px-2 rounded-lg mt-5 shadow-xl hover:bg-gray-400 hover:text-black font-bold"
+                className="w-fit bg-blue-400 text-white py-1 px-2 rounded-lg mt-5 shadow-xl hover:bg-gray-400  font-bold"
               >
-                {loading ? "Logging In" : "Login In"}
+                {loading ? <Spinner color="white" /> : "Log In"}
               </button>
             </div>
           </div>
